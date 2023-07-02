@@ -1,0 +1,1 @@
+﻿Scaffold-DBContext -f "SERVER=.\SQLEXPRESS;DATABASE=MueblesCormar;INTEGRATED SECURITY=TRUE; USER Id=;Password=" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
