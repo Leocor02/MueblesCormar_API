@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
 
 namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class DetalleRegistroesController : ControllerBase
     {
         private readonly MueblesCormarContext _context;

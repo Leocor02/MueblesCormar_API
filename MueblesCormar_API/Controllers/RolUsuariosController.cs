@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Attributes;
 
 namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class RolUsuariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;

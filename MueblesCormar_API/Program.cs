@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Models;
 using System.Drawing;
@@ -14,8 +15,13 @@ namespace MueblesCormar_API
 
             builder.Services.AddControllers();
 
-            //Creación de la configuración de cadena de conexión contra el entorno
-            var conn = @"SERVER=.\SQLEXPRESS;DATABASE=MueblesCormar;INTEGRATED SECURITY=TRUE; USER Id=;Password=";
+            //obtenemos la info dela cadena de conexion desde el archivo de configuración
+            //appsetting.json, el nombre de la etiqueta es CNNSTR
+            var CnnStrBuilder = new SqlConnectionStringBuilder(
+                builder.Configuration.GetConnectionString("CNNSTR"));
+
+            string conn = CnnStrBuilder.ConnectionString;
+
             builder.Services.AddDbContext<MueblesCormarContext>(options => options.UseSqlServer(conn));
     
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
