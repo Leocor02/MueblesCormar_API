@@ -53,6 +53,28 @@ namespace MueblesCormar_API.Controllers
             return usuario;
         }
 
+        // GET: api/Usuarios/ValidarLogin?NombreUsuario=l&ContraseniaUsuario=1
+        [HttpGet("ValidarLogin")]
+        public async Task<ActionResult<Usuario>> ValidarLogin(string NombreUsuario, string ContraseniaUsuario)
+        {
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
+
+            string ApiLevelEncriptedPassword = MyCrypto.EncriptarEnUnSentido(ContraseniaUsuario);
+
+            var usuario = await _context.Usuarios.SingleOrDefaultAsync(e => e.Email == NombreUsuario &&
+            e.Contraseña == ApiLevelEncriptedPassword);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return usuario;
+        }
+
         // PUT: api/Usuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
