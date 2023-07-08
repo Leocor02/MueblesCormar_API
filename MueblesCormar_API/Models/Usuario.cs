@@ -18,7 +18,7 @@ namespace MueblesCormar_API.Models
         public string Telefono { get; set; } = null!;
         public int IdrolUsuario { get; set; }
 
-        public virtual RolUsuario IdrolUsuarioNavigation { get; set; } = null!;
+        public virtual RolUsuario? IdrolUsuarioNavigation { get; set; } = null!;
         public virtual ICollection<Bitacora> Bitacoras { get; set; }
         public virtual ICollection<Registro> Registros { get; set; }
     }
