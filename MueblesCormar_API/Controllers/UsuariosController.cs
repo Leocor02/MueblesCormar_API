@@ -15,9 +15,13 @@ namespace MueblesCormar_API.Controllers
     {
         private readonly MueblesCormarContext _context;
 
+        public Tools.Crypto MyCrypto { get; set; }
+
         public UsuariosController(MueblesCormarContext context)
         {
             _context = context;
+
+            MyCrypto = new Tools.Crypto();
         }
 
         // GET: api/Usuarios
@@ -89,6 +93,11 @@ namespace MueblesCormar_API.Controllers
           {
               return Problem("Entity set 'MueblesCormarContext.Usuarios'  is null.");
           }
+
+            string ApiLevelEncriptedPass = MyCrypto.EncriptarEnUnSentido(usuario.Contraseña);
+
+            usuario.Contraseña = ApiLevelEncriptedPass;
+
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
