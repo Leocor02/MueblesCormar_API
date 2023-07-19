@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Models.DTOs;
 
 namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class UsuariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -37,22 +38,47 @@ namespace MueblesCormar_API.Controllers
             return await _context.Usuarios.ToListAsync();
         }
 
-        // GET: api/Usuarios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+       
+        // GET: api/Usuarios/GetInfoUsuario?email=leonardo@gmail.com
+        [HttpGet("GetInfoUsuario")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetInfoUsuario(string email)
         {
           if (_context.Usuarios == null)
           {
               return NotFound();
           }
-            var usuario = await _context.Usuarios.FindAsync(id);
 
-            if (usuario == null)
+            var query = (from u in _context.Usuarios
+                         where u.Email == email
+                         select new
+                         {
+                             idusuario = u.Idusuario,
+                             nombre = u.Nombre,
+                             email = u.Email,
+                             telefono = u.Telefono,
+                             idrolusuario = u.IdrolUsuario,
+                         }).ToList();
+            List<UsuarioDTO> list = new List<UsuarioDTO>();
+
+            foreach (var item in query)
+            {
+                UsuarioDTO newItem = new UsuarioDTO();
+
+                newItem.Idusuario = item.idusuario;
+                newItem.Nombre = item.nombre;
+                newItem.Email = item.email;
+                newItem.Telefono = item.telefono;
+                newItem.IdrolUsuario = item.idrolusuario;
+                
+                list.Add(newItem);
+            }
+
+            if (list == null)
             {
                 return NotFound();
             }
 
-            return usuario;
+            return list;
         }
 
         // GET: api/Usuarios/ValidarLogin?NombreUsuario=l&ContraseniaUsuario=1
