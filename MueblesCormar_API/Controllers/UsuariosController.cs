@@ -81,6 +81,51 @@ namespace MueblesCormar_API.Controllers
             return list;
         }
 
+        // GET: api/Usuarios/GetListaEmpleado
+        [HttpGet("GetListaEmpleado")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetListaEmpleado()
+        {
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
+
+            var query = from u in _context.Usuarios
+                        where u.IdrolUsuario == 2
+                         select new
+                         {
+                             Idusuario = u.Idusuario,
+                             Nombre = u.Nombre,
+                             Email = u.Email,
+                             Telefono = u.Telefono,
+                             IdrolUsuario = u.IdrolUsuario,
+                         };
+
+            List<UsuarioDTO> EmpleadoLista = new List<UsuarioDTO>();
+
+            foreach (var usuario in query)
+            {
+                EmpleadoLista.Add(
+                    new UsuarioDTO
+                    {
+                        Idusuario = usuario.Idusuario,
+                        Nombre = usuario.Nombre,
+                        Email = usuario.Email,
+                        Telefono = usuario.Telefono,
+                        IdrolUsuario= usuario.IdrolUsuario,
+                    }
+
+                    );
+            }
+
+            if (EmpleadoLista == null)
+            {
+                return NotFound();
+            }
+
+            return EmpleadoLista;
+        }
+
         // GET: api/Usuarios/ValidarLogin?NombreUsuario=l&ContraseniaUsuario=1
         [HttpGet("ValidarLogin")]
         public async Task<ActionResult<Usuario>> ValidarLogin(string NombreUsuario, string ContraseniaUsuario)
