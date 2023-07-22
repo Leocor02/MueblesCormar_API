@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Models.DTOs;
 
 namespace MueblesCormar_API.Controllers
 {
@@ -49,6 +50,47 @@ namespace MueblesCormar_API.Controllers
             }
 
             return proveedor;
+        }
+
+        // GET: api/Proveedors/GetListaProveedor
+        [HttpGet("GetListaProveedor")]
+        public ActionResult<IEnumerable<ProveedorDTO>> GetListaProveedor()
+        {
+            if (_context.Proveedors == null)
+            {
+                return NotFound();
+            }
+
+            var query = from p in _context.Proveedors
+                        select new
+                        {
+                            Idproveedor = p.Idproveedor,
+                            Nombre = p.Nombre,
+                            Direccion = p.Direccion
+                        };
+
+            List<ProveedorDTO> ProveedorLista = new List<ProveedorDTO>();
+
+            foreach (var proveedor in query)
+            {
+                ProveedorLista.Add(
+                    new ProveedorDTO
+                    {
+                        Idproveedor = proveedor.Idproveedor,
+                        Nombre = proveedor.Nombre,
+                        Direccion = proveedor.Direccion
+
+                    }
+
+                    );
+            }
+
+            if (ProveedorLista == null)
+            {
+                return NotFound();
+            }
+
+            return ProveedorLista;
         }
 
         // PUT: api/Proveedors/5
