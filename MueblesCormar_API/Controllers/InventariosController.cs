@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Models.DTOs;
 
 namespace MueblesCormar_API.Controllers
 {
@@ -49,6 +50,52 @@ namespace MueblesCormar_API.Controllers
             }
 
             return inventario;
+        }
+
+        // GET: api/Inventarios/GetListaProducto
+        [HttpGet("GetListaProducto")]
+        public ActionResult<IEnumerable<InventarioDTO>> GetListaProducto()
+        {
+            if (_context.Inventarios == null)
+            {
+                return NotFound();
+            }
+
+            var query = from i in _context.Inventarios
+                        select new
+                        {
+                            Idproducto = i.Idproducto,
+                            Nombre = i.Nombre,
+                            Cantidad = i.Cantidad,
+                            Descripcion = i.Descripcion,
+                            ImagenProducto = i.ImagenProducto,
+                            PrecioUnidad = i.PrecioUnidad
+                        };
+
+            List<InventarioDTO> inventarioLista = new List<InventarioDTO>();
+
+            foreach (var producto in query)
+            {
+                inventarioLista.Add(
+                    new InventarioDTO
+                    {
+                        Idproducto = producto.Idproducto,
+                        Nombre = producto.Nombre,
+                        Cantidad = producto.Cantidad,
+                        Descripcion = producto.Descripcion,
+                        ImagenProducto = producto.ImagenProducto,
+                        PrecioUnidad = producto.PrecioUnidad
+                    }
+
+                    );
+            }
+
+            if (inventarioLista == null)
+            {
+                return NotFound();
+            }
+
+            return inventarioLista;
         }
 
         // PUT: api/Inventarios/5
