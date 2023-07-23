@@ -81,6 +81,54 @@ namespace MueblesCormar_API.Controllers
             return list;
         }
 
+
+        // GET: api/Usuarios/GetDataEmpleado?idUsuario=6
+        [HttpGet("GetDataEmpleado")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetInfoUsuario(int idUsuario)
+        {
+            //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
+            //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
+            //los resultados y luego usarla para llenar los atributos de un modelo o DTO
+
+            var query = (from u in _context.Usuarios
+                         join rolUsuario in _context.RolUsuarios on u.IdrolUsuario equals rolUsuario.IdrolUsuario
+                         where u.Idusuario == idUsuario
+                         select new
+                         {
+                             IdUsuario = u.Idusuario,
+                             Nombre = u.Nombre,
+                             Email = u.Email,
+                             Contrasennia = u.Contraseña,
+                             Telefono = u.Telefono,
+                             IdrolUsuario = rolUsuario.IdrolUsuario
+                         }).ToList();
+
+            List<UsuarioDTO> list = new List<UsuarioDTO>();
+
+            foreach (var usuario in query)
+            {
+                UsuarioDTO NewItem = new UsuarioDTO();
+
+                NewItem.Idusuario = usuario.IdUsuario;
+                NewItem.Nombre = usuario.Nombre;
+                NewItem.Email = usuario.Email;
+                NewItem.Contrasennia = usuario.Contrasennia;
+                NewItem.Telefono = usuario.Telefono;
+                NewItem.IdrolUsuario = usuario.IdrolUsuario;
+
+                list.Add(NewItem);
+
+            }
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+
+        }
+
         // GET: api/Usuarios/GetListaEmpleado
         [HttpGet("GetListaEmpleado")]
         public ActionResult<IEnumerable<UsuarioDTO>> GetListaEmpleado()
