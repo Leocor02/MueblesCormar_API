@@ -13,7 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class InventariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -52,7 +52,53 @@ namespace MueblesCormar_API.Controllers
             return inventario;
         }
 
-        
+        // GET: api/Inventarios/GetDataProducto?idInventario=1
+        [HttpGet("GetDataProducto")]
+        public ActionResult<IEnumerable<InventarioDTO>> GetDataProducto(int idProducto)
+        {
+            //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
+            //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
+            //los resultados y luego usarla para llenar los atributos de un modelo o DTO
+
+            var query = (from i in _context.Inventarios
+                         where i.Idproducto == idProducto
+                         select new
+                         {
+                             Idproducto = i.Idproducto,
+                             Nombre = i.Nombre,
+                             Cantidad = i.Cantidad,
+                             Descripcion = i.Descripcion,
+                             ImagenProducto = i.ImagenProducto,
+                             PrecioUnidad = i.PrecioUnidad,
+                         }).ToList();
+
+            List<InventarioDTO> list = new List<InventarioDTO>();
+
+            foreach (var producto in query)
+            {
+                InventarioDTO NewItem = new InventarioDTO();
+
+                NewItem.Idproducto = producto.Idproducto;
+                NewItem.Nombre = producto.Nombre;
+                NewItem.Cantidad = producto.Cantidad;
+                NewItem.Descripcion = producto.Descripcion;
+                NewItem.Nombre = producto.Nombre;
+                NewItem.ImagenProducto = producto.ImagenProducto;
+                NewItem.PrecioUnidad = producto.PrecioUnidad;
+
+                list.Add(NewItem);
+
+            }
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+
+        }
+
         // GET: api/Inventarios/GetListaProducto
         [HttpGet("GetListaProducto")]
         public ActionResult<IEnumerable<InventarioDTO>> GetListaProducto()

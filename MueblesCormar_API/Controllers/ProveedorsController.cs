@@ -52,6 +52,46 @@ namespace MueblesCormar_API.Controllers
             return proveedor;
         }
 
+        // GET: api/Proveedors/GetDataProveedor?idProveedor=7
+        [HttpGet("GetDataProveedor")]
+        public ActionResult<IEnumerable<ProveedorDTO>> GetDataProveedor(int idProveedor)
+        {
+            //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
+            //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
+            //los resultados y luego usarla para llenar los atributos de un modelo o DTO
+
+            var query = (from p in _context.Proveedors
+                         where p.Idproveedor == idProveedor
+                         select new
+                         {
+                             Idproveedor = p.Idproveedor,
+                             Nombre = p.Nombre,
+                             Direccion = p.Direccion
+                         }).ToList();
+
+            List<ProveedorDTO> list = new List<ProveedorDTO>();
+
+            foreach (var proveedor in query)
+            {
+                ProveedorDTO NewItem = new ProveedorDTO();
+
+                NewItem.Idproveedor = proveedor.Idproveedor;
+                NewItem.Nombre = proveedor.Nombre;
+                NewItem.Direccion = proveedor.Direccion;
+
+                list.Add(NewItem);
+
+            }
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+
+        }
+
         // GET: api/Proveedors/GetListaProveedor
         [HttpGet("GetListaProveedor")]
         public ActionResult<IEnumerable<ProveedorDTO>> GetListaProveedor()
