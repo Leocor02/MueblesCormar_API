@@ -13,7 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ApiKey]
+    [ApiKey]
     public class ProveedorInventariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -70,7 +70,7 @@ namespace MueblesCormar_API.Controllers
                          where pi.IdproveedorInventario == idProveedorInventario
                          select new
                          {
-                             IdProveedorInventario = pi.IdproveedorInventario,
+                             IdproveedorInventario = pi.IdproveedorInventario,
                              Idproveedor = p.Idproveedor,
                              Idproducto = i.Idproducto,
                              NombreProveedor = p.Nombre,
@@ -83,7 +83,7 @@ namespace MueblesCormar_API.Controllers
             {
                 ProveedorInventarioDTO NewItem = new ProveedorInventarioDTO();
 
-                NewItem.IdproveedorInventario = proveedorInventario.IdProveedorInventario;
+                NewItem.IdproveedorInventario = proveedorInventario.IdproveedorInventario;
                 NewItem.Idproveedor = proveedorInventario.Idproveedor;
                 NewItem.Idproducto = proveedorInventario.Idproducto;
                 NewItem.NombreProveedor = proveedorInventario.NombreProveedor;
