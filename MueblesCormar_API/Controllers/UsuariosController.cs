@@ -84,7 +84,7 @@ namespace MueblesCormar_API.Controllers
 
         // GET: api/Usuarios/GetDataEmpleado?idUsuario=6
         [HttpGet("GetDataEmpleado")]
-        public ActionResult<IEnumerable<UsuarioDTO>> GetInfoUsuario(int idUsuario)
+        public ActionResult<IEnumerable<UsuarioDTO>> GetDataEmpleado(int idUsuario)
         {
             //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
             //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
@@ -98,7 +98,7 @@ namespace MueblesCormar_API.Controllers
                              IdUsuario = u.Idusuario,
                              Nombre = u.Nombre,
                              Email = u.Email,
-                             Contrasennia = u.Contraseña,
+                             Contraseña = u.Contraseña,
                              Telefono = u.Telefono,
                              IdrolUsuario = rolUsuario.IdrolUsuario
                          }).ToList();
@@ -112,7 +112,7 @@ namespace MueblesCormar_API.Controllers
                 NewItem.Idusuario = usuario.IdUsuario;
                 NewItem.Nombre = usuario.Nombre;
                 NewItem.Email = usuario.Email;
-                NewItem.Contrasennia = usuario.Contrasennia;
+                NewItem.Contrasennia = usuario.Contraseña;
                 NewItem.Telefono = usuario.Telefono;
                 NewItem.IdrolUsuario = usuario.IdrolUsuario;
 

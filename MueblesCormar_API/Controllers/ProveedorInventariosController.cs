@@ -13,7 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class ProveedorInventariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
