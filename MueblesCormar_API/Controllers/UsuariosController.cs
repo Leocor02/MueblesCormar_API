@@ -13,7 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ApiKey]
+    [ApiKey]
     public class UsuariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -91,16 +91,16 @@ namespace MueblesCormar_API.Controllers
             //los resultados y luego usarla para llenar los atributos de un modelo o DTO
 
             var query = (from u in _context.Usuarios
-                         join rolUsuario in _context.RolUsuarios on u.IdrolUsuario equals rolUsuario.IdrolUsuario
+                         join ru in _context.RolUsuarios on u.IdrolUsuario equals ru.IdrolUsuario
                          where u.Idusuario == idUsuario
                          select new
                          {
-                             IdUsuario = u.Idusuario,
+                             Idusuario = u.Idusuario,
                              Nombre = u.Nombre,
                              Email = u.Email,
                              Contraseña = u.Contraseña,
                              Telefono = u.Telefono,
-                             IdrolUsuario = rolUsuario.IdrolUsuario
+                             IdrolUsuario = ru.IdrolUsuario
                          }).ToList();
 
             List<UsuarioDTO> list = new List<UsuarioDTO>();
@@ -109,7 +109,7 @@ namespace MueblesCormar_API.Controllers
             {
                 UsuarioDTO NewItem = new UsuarioDTO();
 
-                NewItem.Idusuario = usuario.IdUsuario;
+                NewItem.Idusuario = usuario.Idusuario;
                 NewItem.Nombre = usuario.Nombre;
                 NewItem.Email = usuario.Email;
                 NewItem.Contrasennia = usuario.Contraseña;

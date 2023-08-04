@@ -52,7 +52,7 @@ namespace MueblesCormar_API.Controllers
             return inventario;
         }
 
-        // GET: api/Inventarios/GetDataProducto?idInventario=1
+        // GET: api/Inventarios/GetDataProducto?idProducto=2
         [HttpGet("GetDataProducto")]
         public ActionResult<IEnumerable<InventarioDTO>> GetDataProducto(int idProducto)
         {
