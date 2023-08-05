@@ -179,6 +179,8 @@ namespace MueblesCormar_API.Controllers
             _context.Registros.Add(registro);
             await _context.SaveChangesAsync();
 
+            //hacer el for each y recorrer el detalle de registro y llamar al post del controlador del detalle de registro 
+
             return CreatedAtAction("GetRegistro", new { id = registro.Idregistro }, registro);
         }
 
