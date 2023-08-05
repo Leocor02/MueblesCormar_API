@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Models.DTOs;
 
 namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class RegistroesController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -50,6 +51,90 @@ namespace MueblesCormar_API.Controllers
 
             return registro;
         }
+        
+        // GET: api/Registroes/GetDataRegistro?idRegistro=1
+        [HttpGet("GetDataRegistro")]
+        public ActionResult<IEnumerable<RegistroDTO>> GetDataRegistro(int idRegistro)
+        {
+            //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
+            //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
+            //los resultados y luego usarla para llenar los atributos de un modelo o DTO
+
+            var query = (from r in _context.Registros
+                         where r.Idregistro == idRegistro
+                         select new
+                         {
+                             Idregistro = r.Idregistro,
+                             Fecha = r.Fecha,
+                             Nota = r.Nota,
+                             Idusuario = r.Idusuario
+                         }).ToList();
+
+            List<RegistroDTO> list = new List<RegistroDTO>();
+
+            foreach (var registro in query)
+            {
+                RegistroDTO NewItem = new RegistroDTO();
+
+                NewItem.Idregistro = registro.Idregistro;
+                NewItem.Fecha = registro.Fecha;
+                NewItem.Nota = registro.Nota;
+                NewItem.Idusuario = registro.Idusuario;
+
+                list.Add(NewItem);
+            }
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+        }
+
+        // GET: api/Registroes/GetListaRegistro
+        [HttpGet("GetListaRegistro")]
+        public ActionResult<IEnumerable<RegistroDTO>> GetListaRegistro()
+        {
+            if (_context.Registros == null)
+            {
+                return NotFound();
+            }
+
+            var query = from r in _context.Registros
+                        select new
+                        {
+                            Idregistro = r.Idregistro,
+                            Fecha = r.Fecha,
+                            Nota = r.Nota,
+                            Idusuario = r.Idusuario
+                        };
+
+            List<RegistroDTO> RegistroLista = new List<RegistroDTO>();
+
+            foreach (var registro in query)
+            {
+                RegistroLista.Add(
+                    new RegistroDTO
+                    {
+                        Idregistro = registro.Idregistro,
+                        Fecha = registro.Fecha,
+                        Nota = registro.Nota,
+                        Idusuario = registro.Idusuario
+
+                    }
+
+                    );
+            }
+
+            if (RegistroLista == null)
+            {
+                return NotFound();
+            }
+
+            return RegistroLista;
+        }
+
 
         // PUT: api/Registroes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
