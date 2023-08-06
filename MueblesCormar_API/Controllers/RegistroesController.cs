@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
 using MueblesCormar_API.Models.DTOs;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MueblesCormar_API.Controllers
 {
@@ -178,6 +179,44 @@ namespace MueblesCormar_API.Controllers
           }
             _context.Registros.Add(registro);
             await _context.SaveChangesAsync();
+
+            var query = from dr in _context.DetalleRegistros
+                        select new
+                        {
+                            IddetalleRegistro = dr.IddetalleRegistro,
+                            Cantidad = dr.Cantidad,
+                            PrecioUnidad = dr.PrecioUnidad,
+                            Subtotal = dr.Subtotal,
+                            Impuestos = dr.Impuestos,
+                            Total = dr.Total,
+                            Idregistro = dr.Idregistro,
+                            Idproducto = dr.Idproducto
+                        };
+
+            List<DetalleRegistroDTO> detalleRegistroLista = new List<DetalleRegistroDTO>();
+
+            foreach (var detalleRegistro in query)
+            {
+                detalleRegistroLista.Add(
+                    new DetalleRegistroDTO()
+                    {
+                        IddetalleRegistro = detalleRegistro.IddetalleRegistro,
+                        Cantidad = detalleRegistro.Cantidad,
+                        PrecioUnidad = detalleRegistro.PrecioUnidad,
+                        Subtotal = detalleRegistro.Subtotal,
+                        Impuestos = detalleRegistro.Impuestos,
+                        Total = detalleRegistro.Total,
+                        Idregistro = detalleRegistro.Idregistro,
+                        Idproducto = detalleRegistro.Idproducto
+                    });
+            }
+
+            if (detalleRegistroLista == null)
+            {
+                return NotFound();
+            }
+
+            
 
             //hacer el for each y recorrer el detalle de registro y llamar al post del controlador del detalle de registro 
 
