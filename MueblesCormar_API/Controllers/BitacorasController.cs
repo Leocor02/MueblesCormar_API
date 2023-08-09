@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MueblesCormar_API.Attributes;
 using MueblesCormar_API.Models;
+using MueblesCormar_API.Models.DTOs;
 
 namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class BitacorasController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -49,6 +50,88 @@ namespace MueblesCormar_API.Controllers
             }
 
             return bitacora;
+        }
+
+        // GET: api/Bitacoras/GetDataBitacora?idBitacora=7
+        [HttpGet("GetDataBitacora")]
+        public ActionResult<IEnumerable<Bitacora>> GetDataBitacora(int idBitacora)
+        {
+            //las consultas linq se parecen mucho a las normales que hemos hecho en T-SQL
+            //una de las diferencias es que podemos usar una "tabla temporal" para almacenar
+            //los resultados y luego usarla para llenar los atributos de un modelo o DTO
+
+            var query = (from b in _context.Bitacoras
+                         where b.Idbitacora == idBitacora
+                         select new
+                         {
+                             Idbitacora = b.Idbitacora,
+                             Accion = b.Accion,
+                             fecha = b.Fecha,
+                             Idusuario = b.Idusuario
+                         }).ToList();
+
+            List<Bitacora> list = new List<Bitacora>();
+
+            foreach (var bitacora in query)
+            {
+                Bitacora NewItem = new Bitacora();
+
+                NewItem.Idbitacora = bitacora.Idbitacora;
+                NewItem.Accion = bitacora.Accion;
+                NewItem.Fecha = bitacora.fecha;
+                NewItem.Idusuario = bitacora.Idusuario;
+
+                list.Add(NewItem);
+
+            }
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+
+        }
+
+        // GET: api/Bitacoras/GetListaBitacora
+        [HttpGet("GetListaBitacora")]
+        public ActionResult<IEnumerable<Bitacora>> GetListaBitacora()
+        {
+            if (_context.Bitacoras == null)
+            {
+                return NotFound();
+            }
+
+            var query = from b in _context.Bitacoras
+                        select new
+                        {
+                            Idbitacora = b.Idbitacora,
+                            Accion = b.Accion,
+                            Fecha = b.Fecha,
+                            Idusuario = b.Idusuario
+                        };
+
+            List<Bitacora> BitacoraLista = new List<Bitacora>();
+
+            foreach (var bitacora in query)
+            {
+                BitacoraLista.Add(
+                    new Bitacora
+                    {
+                        Idbitacora = bitacora.Idbitacora,
+                        Accion = bitacora.Accion,
+                        Fecha = bitacora.Fecha,
+                        Idusuario= bitacora.Idusuario
+                    });
+            }
+
+            if (BitacoraLista == null)
+            {
+                return NotFound();
+            }
+
+            return BitacoraLista;
         }
 
         // PUT: api/Bitacoras/5
