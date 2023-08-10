@@ -73,8 +73,8 @@ namespace MueblesCormar_API.Controllers
                              IdproveedorInventario = pi.IdproveedorInventario,
                              Idproveedor = p.Idproveedor,
                              Idproducto = i.Idproducto,
-                             //NombreProveedor = p.Nombre,
-                             //NombreProducto = i.Nombre
+                             NombreProveedor = p.Nombre,
+                             NombreProducto = i.Nombre
                          }).ToList();
 
             List<ProveedorInventarioDTO> list = new List<ProveedorInventarioDTO>();
@@ -86,8 +86,8 @@ namespace MueblesCormar_API.Controllers
                 NewItem.IdproveedorInventario = proveedorInventario.IdproveedorInventario;
                 NewItem.Idproveedor = proveedorInventario.Idproveedor;
                 NewItem.Idproducto = proveedorInventario.Idproducto;
-                //NewItem.NombreProveedor = proveedorInventario.NombreProveedor;
-                //NewItem.NombreProducto = proveedorInventario.NombreProducto;
+                NewItem.NombreProveedor = proveedorInventario.NombreProveedor;
+                NewItem.NombreProducto = proveedorInventario.NombreProducto;
 
                 list.Add(NewItem);
 

@@ -176,7 +176,7 @@ namespace MueblesCormar_API.Controllers
 
         // GET: api/Usuarios/ValidarLogin?NombreUsuario=l&ContraseniaUsuario=1
         [HttpGet("ValidarLogin")]
-        public async Task<ActionResult<UsuarioDTO>> ValidarLogin(string NombreUsuario, string ContraseniaUsuario)
+        public async Task<ActionResult<Usuario>> ValidarLogin(string NombreUsuario, string ContraseniaUsuario)
         {
             if (_context.Usuarios == null)
             {
