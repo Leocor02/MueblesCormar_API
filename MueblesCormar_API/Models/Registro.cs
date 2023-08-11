@@ -15,7 +15,7 @@ namespace MueblesCormar_API.Models
         public string Nota { get; set; } = null!;
         public int Idusuario { get; set; }
 
-        public virtual Usuario IdusuarioNavigation { get; set; } = null!;
+        public virtual Usuario? IdusuarioNavigation { get; set; } = null!;
         public virtual ICollection<DetalleRegistro> DetalleRegistros { get; set; }
     }
 }

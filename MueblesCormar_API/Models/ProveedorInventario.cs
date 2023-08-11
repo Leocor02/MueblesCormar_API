@@ -9,7 +9,7 @@ namespace MueblesCormar_API.Models
         public int Idproveedor { get; set; }
         public int Idproducto { get; set; }
 
-        public virtual Inventario IdproductoNavigation { get; set; } = null!;
-        public virtual Proveedor IdproveedorNavigation { get; set; } = null!;
+        public virtual Inventario? IdproductoNavigation { get; set; } = null!;
+        public virtual Proveedor? IdproveedorNavigation { get; set; } = null!;
     }
 }

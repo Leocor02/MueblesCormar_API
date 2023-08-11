@@ -13,7 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+
     public class UsuariosController : ControllerBase
     {
         private readonly MueblesCormarContext _context;
@@ -37,6 +37,8 @@ namespace MueblesCormar_API.Controllers
           }
             return await _context.Usuarios.ToListAsync();
         }
+
+
 
        
         // GET: api/Usuarios/GetInfoUsuario?email=leonardo@gmail.com
