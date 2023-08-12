@@ -19,7 +19,7 @@ namespace MueblesCormar_API.Models
         public int IdrolUsuario { get; set; }
 
         public virtual RolUsuario? IdrolUsuarioNavigation { get; set; } = null!;
-        public virtual ICollection<Bitacora> Bitacoras { get; set; }
-        public virtual ICollection<Registro> Registros { get; set; }
+        public virtual ICollection<Bitacora>? Bitacoras { get; set; }
+        public virtual ICollection<Registro>? Registros { get; set; }
     }
 }

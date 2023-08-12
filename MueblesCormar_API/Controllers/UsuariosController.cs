@@ -38,9 +38,27 @@ namespace MueblesCormar_API.Controllers
             return await _context.Usuarios.ToListAsync();
         }
 
+        // GET: api/Proveedors/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        {
+            if (_context.Usuarios == null)
+            {
+                return NotFound();
+            }
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return usuario;
+        }
 
 
-       
+
+
         // GET: api/Usuarios/GetInfoUsuario?email=leonardo@gmail.com
         [HttpGet("GetInfoUsuario")]
         public ActionResult<IEnumerable<UsuarioDTO>> GetInfoUsuario(string email)
