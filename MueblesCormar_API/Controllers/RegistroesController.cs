@@ -180,46 +180,12 @@ namespace MueblesCormar_API.Controllers
             _context.Registros.Add(registro);
             await _context.SaveChangesAsync();
 
-            ////var query = from dr in _context.DetalleRegistros
-            //            select new
-            //            {
-            //                IddetalleRegistro = dr.IddetalleRegistro,
-            //                Cantidad = dr.Cantidad,
-            //                PrecioUnidad = dr.PrecioUnidad,
-            //                Subtotal = dr.Subtotal,
-            //                Impuestos = dr.Impuestos,
-            //                Total = dr.Total,
-            //                Idregistro = dr.Idregistro,
-            //                Idproducto = dr.Idproducto
-            //            };
-
             List<DetalleRegistro> detalleRegistroLista = new List<DetalleRegistro>();
 
             foreach (var detalleRegistro in registro.DetalleRegistros)
             {
-                ////detalleRegistroLista.Add(
-                //new DetalleRegistro()
-                //{
-                //    IddetalleRegistro = detalleRegistro.IddetalleRegistro,
-                //    Cantidad = detalleRegistro.Cantidad,
-                //    PrecioUnidad = detalleRegistro.PrecioUnidad,
-                //    Subtotal = detalleRegistro.Subtotal,
-                //    Impuestos = detalleRegistro.Impuestos,
-                //    Total = detalleRegistro.Total,
-                //    Idregistro = detalleRegistro.Idregistro,
-                //    Idproducto = detalleRegistro.Idproducto
-                //});
-
                 PostDetalleRegistro(detalleRegistro);
-
             }
-
-            //if (detalleRegistroLista == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //hacer el for each y recorrer el detalle de registro y llamar al post del controlador del detalle de registro 
 
             return CreatedAtAction("GetRegistro", new { id = registro.Idregistro }, registro);
         }
