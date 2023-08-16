@@ -111,7 +111,7 @@ namespace MueblesCormar_API.Controllers
             //los resultados y luego usarla para llenar los atributos de un modelo o DTO
 
             var query = (from u in _context.Usuarios
-                         //join ru in _context.RolUsuarios on u.IdrolUsuario equals ru.IdrolUsuario
+                         join ru in _context.RolUsuarios on u.IdrolUsuario equals ru.IdrolUsuario
                          where u.Idusuario == idUsuario
                          select new
                          {
@@ -120,7 +120,7 @@ namespace MueblesCormar_API.Controllers
                              Email = u.Email,
                              //Contraseña = u.Contraseña,
                              Telefono = u.Telefono,
-                             //IdrolUsuario = ru.IdrolUsuario
+                             IdrolUsuario = ru.IdrolUsuario
                          }).ToList();
 
             List<UsuarioDTO> list = new List<UsuarioDTO>();
@@ -134,7 +134,7 @@ namespace MueblesCormar_API.Controllers
                 NewItem.Email = usuario.Email;
                 //NewItem.Contrasennia = usuario.Contraseña;
                 NewItem.Telefono = usuario.Telefono;
-                //NewItem.IdrolUsuario = usuario.IdrolUsuario;
+                NewItem.IdrolUsuario = usuario.IdrolUsuario;
 
                 list.Add(NewItem);
 
