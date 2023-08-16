@@ -118,7 +118,7 @@ namespace MueblesCormar_API.Controllers
                              Idusuario = u.Idusuario,
                              Nombre = u.Nombre,
                              Email = u.Email,
-                             //Contraseña = u.Contraseña,
+                             Contraseña = u.Contraseña,
                              Telefono = u.Telefono,
                              IdrolUsuario = ru.IdrolUsuario
                          }).ToList();
@@ -132,7 +132,7 @@ namespace MueblesCormar_API.Controllers
                 NewItem.Idusuario = usuario.Idusuario;
                 NewItem.Nombre = usuario.Nombre;
                 NewItem.Email = usuario.Email;
-                //NewItem.Contrasennia = usuario.Contraseña;
+                NewItem.Contrasennia = usuario.Contraseña;
                 NewItem.Telefono = usuario.Telefono;
                 NewItem.IdrolUsuario = usuario.IdrolUsuario;
 
@@ -219,14 +219,26 @@ namespace MueblesCormar_API.Controllers
         // PUT: api/Usuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(int id, UsuarioDTO usuario)
         {
             if (id != usuario.Idusuario)
             {
                 return BadRequest();
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
+            //tenemos que crear un objeto de tipo user, y usar los atrib que vienen en el DTO
+            //para llenar la info 
+            Usuario NuevoUsuario = new()
+            {
+                Idusuario = usuario.Idusuario,
+                Nombre = usuario.Nombre,
+                Email = usuario.Email,
+                Contraseña = usuario.Contrasennia,
+                Telefono = usuario.Telefono,
+                IdrolUsuario = usuario.IdrolUsuario
+            };
+
+            _context.Entry(NuevoUsuario).State = EntityState.Modified;
 
             try
             {
