@@ -13,6 +13,7 @@ namespace MueblesCormar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
 
     public class UsuariosController : ControllerBase
     {
