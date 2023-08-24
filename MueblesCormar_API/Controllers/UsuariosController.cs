@@ -161,7 +161,7 @@ namespace MueblesCormar_API.Controllers
 
             var query = from u in _context.Usuarios
                         where u.IdrolUsuario == 2
-                         select new
+                        select new
                          {
                              Idusuario = u.Idusuario,
                              Nombre = u.Nombre,
